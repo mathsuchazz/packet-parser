@@ -3,10 +3,7 @@
 
 use std::fmt;
 
-use crate::{
-    checksum::ChecksumStatus,
-    layer3::ipv4::{HeaderField, Ipv4Header, dscp_name, ecn_keyword},
-};
+use crate::layer3::ipv4::{HeaderField, Ipv4Header, dscp_name, ecn_keyword};
 
 impl fmt::Display for Ipv4Header {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -49,7 +46,7 @@ impl fmt::Display for Ipv4Header {
             "Header Checksum: {:#06x} [{}]",
             self.header_checksum, self.checksum_status
         )?;
-        self.write_checksum_status(f)?;
+        self.checksum_status.write_status(f, "Header Checksum")?;
         writeln!(f, "Source Address: {}", self.source_address)?;
         writeln!(f, "Destination Address: {}", self.destination_address)?;
 
@@ -67,13 +64,5 @@ impl Ipv4Header {
             writeln!(f, "   [Expert Info: {anomaly}]")?;
         }
         Ok(())
-    }
-
-    fn write_checksum_status(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.checksum_status {
-            ChecksumStatus::Bad => writeln!(f, "[Header Checksum status: Bad]"),
-            ChecksumStatus::NotVerifiable => writeln!(f, "[Header Checksum status: Unverified]"),
-            ChecksumStatus::Good => writeln!(f, "[Header Checksum status: Good]"),
-        }
     }
 }

@@ -56,3 +56,15 @@ impl fmt::Display for ChecksumStatus {
         }
     }
 }
+
+impl ChecksumStatus {
+    /// Writes the Wireshark-style status line, e.g. `[Checksum status: Good]`.
+    pub fn write_status(self, f: &mut fmt::Formatter<'_>, label: &str) -> fmt::Result {
+        let status = match self {
+            Self::Good => "Good",
+            Self::Bad => "Bad",
+            Self::NotVerifiable => "Unverified",
+        };
+        writeln!(f, "[{label} status: {status}]")
+    }
+}

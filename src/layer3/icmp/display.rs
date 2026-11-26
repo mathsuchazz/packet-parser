@@ -1,7 +1,6 @@
 //! Wireshark-style text formatting for [`IcmpMessage`].
 
 use crate::{
-    checksum::ChecksumStatus,
     hexdump::Hexdump,
     layer3::icmp::{IcmpBody, IcmpMessage},
 };
@@ -20,7 +19,7 @@ impl<'a> fmt::Display for IcmpMessage<'a> {
             "Checksum: {:#06x} [{}]",
             self.checksum_, self.checksum_status
         )?;
-        self.write_checksum_status(f)?;
+        self.checksum_status.write_status(f, "Checksum")?;
 
         match self.body {
             IcmpBody::Echo(Some(echo)) => {
@@ -52,14 +51,6 @@ impl<'a> IcmpMessage<'a> {
             writeln!(f, "[Expert Info: {anomaly}]")?;
         }
         Ok(())
-    }
-
-    fn write_checksum_status(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        match self.checksum_status {
-            ChecksumStatus::Bad => writeln!(f, "[Checksum status: Bad]"),
-            ChecksumStatus::NotVerifiable => writeln!(f, "[Checksum status: Unverified]"),
-            ChecksumStatus::Good => writeln!(f, "[Checksum status: Good]"),
-        }
     }
 
     fn write_data(f: &mut fmt::Formatter<'_>, data: &[u8]) -> fmt::Result {
