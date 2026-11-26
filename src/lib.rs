@@ -8,6 +8,9 @@
 
 #![warn(missing_docs)]
 
+// One tshark-style indent level for protocol fields.
+pub(crate) const FIELD_INDENT: &str = "    ";
+
 pub mod checksum;
 pub mod errors;
 pub mod frame;

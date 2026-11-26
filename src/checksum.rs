@@ -12,6 +12,7 @@
 //!
 //! - [RFC 1071 – Computing the Internet Checksum](https://www.rfc-editor.org/info/rfc1071)
 
+use crate::FIELD_INDENT;
 use std::fmt;
 
 /// Computes the Internet checksum over the given buffer.
@@ -65,6 +66,6 @@ impl ChecksumStatus {
             Self::Bad => "Bad",
             Self::NotVerifiable => "Unverified",
         };
-        writeln!(f, "[{label} status: {status}]")
+        writeln!(f, "{FIELD_INDENT}[{label} status: {status}]")
     }
 }

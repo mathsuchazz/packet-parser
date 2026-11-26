@@ -106,7 +106,6 @@ impl<'a> Ipv4Payload<'a> {
 impl fmt::Display for Frame<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         write!(f, "{}", self.header)?;
-        writeln!(f)?;
         write!(f, "{}", self.payload)?;
         Ok(())
     }
@@ -117,7 +116,6 @@ impl fmt::Display for EthernetPayload<'_> {
         match self {
             Self::Ipv4 { header, payload } => {
                 write!(f, "{header}")?;
-                writeln!(f)?;
                 write!(f, "{payload}")
             }
             Self::Unsupported(ethertype) => writeln!(f, "{ethertype}: not dissected yet"),

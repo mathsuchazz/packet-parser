@@ -19,6 +19,7 @@
 //! - [IANA EtherType registry](https://www.iana.org/assignments/ieee-802-numbers/ieee-802-numbers.xhtml)
 //! - [RFC 894 – IP over Ethernet](https://www.rfc-editor.org/rfc/rfc894)
 
+use crate::FIELD_INDENT;
 use std::fmt;
 use thiserror::Error;
 
@@ -150,11 +151,11 @@ impl fmt::Display for EthernetHeader {
             "Ethernet II, Src: ({}), Dst: ({})",
             self.src_mac, self.dst_mac
         )?;
-        writeln!(f, "Destination: ({})", self.dst_mac)?;
-        writeln!(f, "Source: ({})", self.src_mac)?;
+        writeln!(f, "{FIELD_INDENT}Destination: ({})", self.dst_mac)?;
+        writeln!(f, "{FIELD_INDENT}Source: ({})", self.src_mac)?;
         writeln!(
             f,
-            "Type: {} ({:#06x})",
+            "{FIELD_INDENT}Type: {} ({:#06x})",
             self.ethertype,
             self.ethertype.value()
         )
