@@ -7,6 +7,7 @@
 //! protocol field of its parent layer.
 
 use crate::{
+    FIELD_INDENT,
     errors::AppError,
     layer2::{EtherType, EthernetHeader},
     layer3::{
@@ -127,8 +128,13 @@ impl fmt::Display for Ipv4Payload<'_> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         match self {
             Self::Icmp(message) => write!(f, "{message}"),
-            Self::Unlocatable => writeln!(f, "payload not dissected: unlocatable"),
-            Self::NotCaptured => writeln!(f, "payload not captured"),
+            Self::Unlocatable => {
+                writeln!(
+                    f,
+                    "{FIELD_INDENT}[Expert Info: Payload cannot be located (inconsistent lengths)]"
+                )
+            }
+            Self::NotCaptured => writeln!(f, "{FIELD_INDENT}[Expert Info: Payload not captured]"),
             Self::Unsupported(protocol) => writeln!(f, "{protocol}: not dissected yet"),
         }
     }
