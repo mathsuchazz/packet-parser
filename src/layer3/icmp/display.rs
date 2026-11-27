@@ -61,6 +61,7 @@ impl<'a> IcmpMessage<'a> {
 
     fn write_data(f: &mut fmt::Formatter<'_>, data: &[u8]) -> fmt::Result {
         writeln!(f, "{FIELD_INDENT}Data ({} bytes)", data.len())?;
+        writeln!(f)?;
         write!(f, "{}", Hexdump(data))
     }
 }
